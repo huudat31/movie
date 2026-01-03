@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">movie_app</string>
+    
+    <!-- Replace with your Facebook App ID -->
+    <string name="facebook_app_id">822426367508156</string>
+    
+    <!-- Replace with your Facebook Client Token -->
+    <string name="facebook_client_token">939e05119e6d2bdb8c161dcf4922a764</string>
+    
+    <!-- Replace with your Facebook App ID prefixed with 'fb' -->
+    <string name="fb_login_protocol_scheme">fb822426367508156</string>
+</resources>

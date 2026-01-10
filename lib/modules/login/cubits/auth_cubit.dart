@@ -1,19 +1,17 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app/modules/login/cubits/auth_state.dart';
 import 'package:movie_app/modules/login/model/user_model.dart';
-import 'package:movie_app/service/api/firebase_auth_service.dart';
+import 'package:movie_app/services/api/firebase_auth_service.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   final FirebaseAuthService _authService;
-  
-  AuthCubit(this._authService) : super(AuthInitial()){
-    //listen to auth state changes
-    _authService.authStateChanges.listen((user){
-      if(user != null){
-        emit(AuthAuthenicated(UserModel.fromFirebaseUser(user)));
 
-      }
-      else{
+  AuthCubit(this._authService) : super(AuthInitial()) {
+    //listen to auth state changes
+    _authService.authStateChanges.listen((user) {
+      if (user != null) {
+        emit(AuthAuthenicated(UserModel.fromFirebaseUser(user)));
+      } else {
         emit(AuthUnauthenticated());
       }
     });
@@ -29,7 +27,7 @@ class AuthCubit extends Cubit<AuthState> {
         email: email,
         password: password,
       );
-      
+
       if (user != null) {
         emit(AuthAuthenicated(user));
       } else {
@@ -51,7 +49,7 @@ class AuthCubit extends Cubit<AuthState> {
         email: email,
         password: password,
       );
-      
+
       if (user != null) {
         emit(AuthAuthenicated(user));
       } else {
@@ -63,62 +61,57 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future<void> signInWithGoogle() async {
-    try{
+    try {
       emit(AuthLoading());
       final user = await _authService.signInWithGoogle();
-      if(user != null){
+      if (user != null) {
         emit(AuthAuthenicated(user));
-      }else{
+      } else {
         emit(AuthUnauthenticated());
       }
-    }
-    catch(e){
+    } catch (e) {
       emit(AuthError(e.toString()));
     }
   }
 
   Future<void> signInWithFacebook() async {
-    try{
+    try {
       emit(AuthLoading());
       final user = await _authService.signInWithFacebook();
-      if(user != null){
+      if (user != null) {
         emit(AuthAuthenicated(user));
-      }else{
+      } else {
         emit(AuthUnauthenticated());
       }
-    }
-    catch(e){
+    } catch (e) {
       emit(AuthError(e.toString()));
     }
   }
 
   Future<void> signOut() async {
-    try{
+    try {
       emit(AuthLoading());
       await _authService.signOut();
       emit(AuthUnauthenticated());
-    }
-    catch(e){
+    } catch (e) {
       emit(AuthError(e.toString()));
     }
   }
 
   Future<void> sendPasswordResetEmail(String email) async {
-    try{
+    try {
       emit(AuthLoading());
       await _authService.sendPasswordResetEmail(email);
       emit(AuthPasswordResetEmailSent());
-    }
-    catch(e){
+    } catch (e) {
       emit(AuthError(e.toString()));
     }
   }
 
-
   bool get isAuthenicated => state is AuthAuthenicated;
 
   UserModel? get currentUser {
-    if(state is AuthAuthenicated){
+    if (state is AuthAuthenicated) {
       return (state as AuthAuthenicated).user;
     }
     return null;

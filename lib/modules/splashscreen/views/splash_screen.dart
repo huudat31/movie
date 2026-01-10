@@ -72,7 +72,6 @@ class _SplashScreenState extends State<SplashScreen>
         );
       }
     } catch (e) {
-      // Nếu có lỗi, vẫn chuyển sang login
       debugPrint('Splash error: $e');
       if (mounted) {
         Navigator.of(context).pushReplacement(

@@ -13,7 +13,7 @@ class OnboardingModel {
 // Onboarding data
 final List<OnboardingModel> onboardingPages = [
   OnboardingModel(
-    title: 'Unlimited Entertainment',
+    title: 'BaoVy Entertainment',
     description: 'Watch thousands of movies and TV shows on all your devices',
     imageUrl:
         'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=800',

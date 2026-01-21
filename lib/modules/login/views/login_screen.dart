@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie_app/modules/home/views/home_screen.dart';
 import 'package:movie_app/modules/login/cubits/auth_cubit.dart';
 import 'package:movie_app/modules/login/cubits/auth_state.dart';
-import 'package:movie_app/modules/login/views/home_screen.dart';
+import 'package:movie_app/modules/root/views/root_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -32,7 +33,7 @@ class _LoginScreenState extends State<LoginScreen> {
         listener: (context, state) {
           if (state is AuthAuthenicated) {
             Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (_) => const HomeScreen()),
+              MaterialPageRoute(builder: (_) => const RootScreen()),
             );
           } else if (state is AuthError) {
             ScaffoldMessenger.of(context).showSnackBar(

@@ -6,6 +6,7 @@ import 'package:movie_app/modules/login/cubits/auth_cubit.dart';
 import 'package:movie_app/modules/login/cubits/auth_state.dart';
 import 'package:movie_app/modules/root/views/root_screen.dart';
 import 'package:movie_app/modules/splashscreen/views/splash_screen.dart';
+import 'package:movie_app/services/api/api_service.dart';
 import 'package:movie_app/services/api/firebase_auth_service.dart';
 
 void main() async {
@@ -14,6 +15,7 @@ void main() async {
   try {
     await Firebase.initializeApp();
     await Env.load();
+    await ApiService.createDio();
   } catch (e) {
     debugPrint("==========================> /n");
     debugPrint('Error: $e');
@@ -28,7 +30,6 @@ class MyApp extends StatelessWidget {
     return BlocProvider(
       create: (context) => AuthCubit(FirebaseAuthService()),
       child: MaterialApp(
-        title: 'Movie+ Auth',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primarySwatch: Colors.orange,

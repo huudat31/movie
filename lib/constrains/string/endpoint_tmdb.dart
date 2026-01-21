@@ -17,5 +17,6 @@ class EndpointTmdb {
       '$baseUrl/tv/popular?language=en-US&page=$page';
 
   // account endpoint
-  static String get getAccountDetails => '$baseUrl/account/$accountId';
+  static String getAccountDetails(int accountId) =>
+      '$baseUrl/account/$accountId';
 }

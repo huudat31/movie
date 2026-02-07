@@ -37,21 +37,12 @@ class _HomeTMDBScreenState extends State<HomeTMDBScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AuthCubit, AuthState>(
-      listener: (context, state) {
-        if (state is AuthUnauthenticated) {
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (_) => const LoginScreen()),
-          );
-        }
-      },
-      child: Scaffold(
-        backgroundColor: Colors.black,
-        body: SafeArea(
-          child: _selectedIndex == 0
-              ? _buildHomeContent()
-              : const MyWatchlistScreen(),
-        ),
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: SafeArea(
+        child: _selectedIndex == 0
+            ? _buildHomeContent()
+            : const MyWatchlistScreen(),
       ),
     );
   }

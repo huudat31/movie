@@ -4,9 +4,9 @@ class TMDBVideo extends Equatable {
   final String id;
   final String key;
   final String name;
-  final String site;
+  final String? site;
   final int size;
-  final String type;
+  final String? type;
   final bool official;
   final String publishedAt;
 
@@ -34,6 +34,13 @@ class TMDBVideo extends Equatable {
     );
   }
 
+  /// Empty factory for fallback
+  factory TMDBVideo.empty() =>
+      const TMDBVideo(id: '', key: '', name: '', publishedAt: '');
+
+  /// Check if this is an empty video
+  bool get isEmpty => id.isEmpty || key.isEmpty;
+
   Map<String, dynamic> toJson() {
     return {
       'id': id,
@@ -57,10 +64,10 @@ class TMDBVideo extends Equatable {
   String get thumbnailUrl => 'https://img.youtube.com/vi/$key/hqdefault.jpg';
 
   // Check if it's a trailer
-  bool get isTrailer => type.toLowerCase().contains('trailer');
+  bool get isTrailer => type?.toLowerCase().contains('trailer') ?? false;
 
   // Check if it's a teaser
-  bool get isTeaser => type.toLowerCase().contains('teaser');
+  bool get isTeaser => type?.toLowerCase().contains('teaser') ?? false;
 
   @override
   List<Object?> get props => [id, key, name, site, type, official];

@@ -87,7 +87,7 @@ class _TMDBDetailScreenState extends State<TMDBDetailScreen> {
   @override
   Widget build(BuildContext context) {
     final backdropUrl = TMDBService.getBackdropUrl(widget.movie.backdropPath);
-    final genres = TmdbGenre.getGenreNames(
+    final genres = TMDBGenre.getGenreNames(
       widget.movie.genreIds,
       isTVShow: widget.movie.isTVShow,
     );

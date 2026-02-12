@@ -185,7 +185,7 @@ class _TMDBSearchScreenState extends State<TMDBSearchScreen> {
 
   Widget _buildSearchResultItem(TMDBMovie movie) {
     final posterUrl = TMDBService.getPosterUrl(movie.posterPath);
-    final genres = TmdbGenre.getGenreNames(
+    final genres = TMDBGenre.getGenreNames(
       movie.genreIds.take(3).toList(),
       isTVShow: movie.isTVShow,
     );

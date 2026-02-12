@@ -20,7 +20,6 @@ class HomeTMDBScreen extends StatefulWidget {
 
 class _HomeTMDBScreenState extends State<HomeTMDBScreen> {
   late final TMDBService _tmdbService;
-  int _selectedIndex = 0;
 
   @override
   void initState() {
@@ -37,22 +36,9 @@ class _HomeTMDBScreenState extends State<HomeTMDBScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AuthCubit, AuthState>(
-      listener: (context, state) {
-        if (state is AuthUnauthenticated) {
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (_) => const LoginScreen()),
-          );
-        }
-      },
-      child: Scaffold(
-        backgroundColor: Colors.black,
-        body: SafeArea(
-          child: _selectedIndex == 0
-              ? _buildHomeContent()
-              : const MyWatchlistScreen(),
-        ),
-      ),
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: SafeArea(child: _buildHomeContent()),
     );
   }
 
@@ -383,60 +369,6 @@ class _HomeTMDBScreenState extends State<HomeTMDBScreen> {
       child: Padding(
         padding: EdgeInsets.all(20),
         child: Text('No movies found', style: TextStyle(color: Colors.grey)),
-      ),
-    );
-  }
-
-  Widget _buildNavItem(IconData icon, int index) {
-    final isActive = _selectedIndex == index;
-    return GestureDetector(
-      onTap: () {
-        if (index == 2) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (_) => const MyWatchlistScreen()),
-          );
-        } else if (index == 3) {
-          _showProfileDialog();
-        } else {
-          setState(() => _selectedIndex = index);
-        }
-      },
-      child: Icon(
-        icon,
-        color: isActive ? Colors.white : Colors.white60,
-        size: 28,
-      ),
-    );
-  }
-
-  void _showProfileDialog() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: Colors.grey[900],
-        title: const Text('Sign Out', style: TextStyle(color: Colors.white)),
-        content: const Text(
-          'Are you sure you want to sign out?',
-          style: TextStyle(color: Colors.white70),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-              context.read<AuthCubit>().signOut();
-            },
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-            child: const Text(
-              'Sign Out',
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
-        ],
       ),
     );
   }

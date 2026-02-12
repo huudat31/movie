@@ -6,6 +6,7 @@ import 'package:movie_app/modules/movie/model/tmdb_movie.dart';
 import 'package:movie_app/modules/movie/model/tmdb_video.dart';
 import 'package:movie_app/services/tmdb/tmdb_service.dart';
 import 'package:movie_app/services/tmdb/watch_list_service.dart';
+import 'package:movie_app/modules/booking/views/showtime_screen.dart';
 import 'video_player_screen.dart';
 
 class TMDBDetailScreen extends StatefulWidget {
@@ -87,7 +88,7 @@ class _TMDBDetailScreenState extends State<TMDBDetailScreen> {
   @override
   Widget build(BuildContext context) {
     final backdropUrl = TMDBService.getBackdropUrl(widget.movie.backdropPath);
-    final genres = TmdbGenre.getGenreNames(
+    final genres = TMDBGenre.getGenreNames(
       widget.movie.genreIds,
       isTVShow: widget.movie.isTVShow,
     );
@@ -308,57 +309,95 @@ class _TMDBDetailScreenState extends State<TMDBDetailScreen> {
   }
 
   Widget _buildActionButtons() {
-    return Row(
+    return Column(
       children: [
-        Expanded(
+        SizedBox(
+          width: double.infinity,
           child: ElevatedButton.icon(
-            onPressed: _videos.isNotEmpty ? _playTrailer : null,
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ShowtimeScreen(movie: widget.movie),
+                ),
+              );
+            },
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFFFF6B35),
-              disabledBackgroundColor: Colors.grey[800],
               padding: const EdgeInsets.symmetric(vertical: 16),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
+              elevation: 8,
+              shadowColor: const Color(0xFFFF6B35).withOpacity(0.5),
             ),
-            icon: const Icon(Icons.play_arrow, color: Colors.white),
-            label: Text(
-              _videos.isEmpty ? 'No Trailer' : 'Play Trailer',
-              style: const TextStyle(
-                fontSize: 16,
+            icon: const Icon(Icons.confirmation_num, color: Colors.white),
+            label: const Text(
+              'Book Ticket',
+              style: TextStyle(
+                fontSize: 18,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
               ),
             ),
           ),
         ),
-        const SizedBox(width: 12),
-        Container(
-          decoration: BoxDecoration(
-            color: Colors.grey[800],
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: IconButton(
-            onPressed: _toggleWatchlist,
-            icon: Icon(
-              _isInWatchlist ? Icons.bookmark : Icons.bookmark_border,
-              color: _isInWatchlist ? const Color(0xFFFF6B35) : Colors.white,
-              size: 28,
+        const SizedBox(height: 16),
+        Row(
+          children: [
+            Expanded(
+              child: ElevatedButton.icon(
+                onPressed: _videos.isNotEmpty ? _playTrailer : null,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.grey[800],
+                  disabledBackgroundColor: Colors.grey[900],
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                icon: const Icon(Icons.play_arrow, color: Colors.white),
+                label: Text(
+                  _videos.isEmpty ? 'No Trailer' : 'Play Trailer',
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
             ),
-          ),
-        ),
-        const SizedBox(width: 12),
-        Container(
-          decoration: BoxDecoration(
-            color: Colors.grey[800],
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: IconButton(
-            onPressed: () {
-              // TODO: Share functionality
-            },
-            icon: const Icon(Icons.share, color: Colors.white, size: 28),
-          ),
+            const SizedBox(width: 12),
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.grey[800],
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: IconButton(
+                onPressed: _toggleWatchlist,
+                icon: Icon(
+                  _isInWatchlist ? Icons.bookmark : Icons.bookmark_border,
+                  color: _isInWatchlist
+                      ? const Color(0xFFFF6B35)
+                      : Colors.white,
+                  size: 28,
+                ),
+              ),
+            ),
+            const SizedBox(width: 12),
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.grey[800],
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: IconButton(
+                onPressed: () {
+                  // TODO: Share functionality
+                },
+                icon: const Icon(Icons.share, color: Colors.white, size: 28),
+              ),
+            ),
+          ],
         ),
       ],
     );

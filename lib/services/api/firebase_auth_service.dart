@@ -81,5 +81,22 @@ class FirebaseAuthService {
       throw Exception("Failed to send password reset email: ${e.toString()}");
     }
   }
+
+  Future<void> updateDisplayName(String name) async {
+    try {
+      await _auth.currentUser?.updateDisplayName(name);
+      await _auth.currentUser?.reload();
+    } catch (e) {
+      throw Exception("Failed to update display name: ${e.toString()}");
+    }
+  }
+
+  Future<void> updatePhotoURL(String url) async {
+    try {
+      await _auth.currentUser?.updatePhotoURL(url);
+      await _auth.currentUser?.reload();
+    } catch (e) {
+      throw Exception("Failed to update photo URL: ${e.toString()}");
+    }
+  }
 }
-   

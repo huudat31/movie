@@ -108,6 +108,25 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
+  Future<void> updateProfile({String? displayName, String? photoURL}) async {
+    try {
+      emit(AuthLoading());
+      if (displayName != null) {
+        await _authService.updateDisplayName(displayName);
+      }
+      if (photoURL != null) {
+        await _authService.updatePhotoURL(photoURL);
+      }
+
+      final user = _authService.currentUser;
+      if (user != null) {
+        emit(AuthAuthenicated(UserModel.fromFirebaseUser(user)));
+      }
+    } catch (e) {
+      emit(AuthError(e.toString()));
+    }
+  }
+
   bool get isAuthenicated => state is AuthAuthenicated;
 
   UserModel? get currentUser {

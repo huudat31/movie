@@ -4,8 +4,8 @@ import 'package:movie_app/modules/browse/views/browse_screen.dart';
 import 'package:movie_app/modules/home/views/home_screen.dart';
 import 'package:movie_app/modules/login/cubits/auth_cubit.dart';
 import 'package:movie_app/modules/login/cubits/auth_state.dart';
-import 'package:movie_app/modules/login/views/login_screen.dart';
 import 'package:movie_app/modules/movie/views/my_watch_list_screen.dart';
+import 'package:movie_app/modules/booking/views/my_tickets_screen.dart';
 import 'package:movie_app/modules/profile/views/profile_screen.dart';
 
 class RootScreen extends StatefulWidget {
@@ -19,10 +19,17 @@ class _RootScreenState extends State<RootScreen> {
   final List<Widget> _screens = [
     const HomeTMDBScreen(),
     const BrowseScreen(),
+    const MyTicketsScreen(),
     const MyWatchlistScreen(),
     const ProfileScreen(),
   ];
-  final List<String> _titles = ['Home', 'Browse', 'Watchlist', 'Profile'];
+  final List<String> _titles = [
+    'Home',
+    'Browse',
+    'Tickets',
+    'Watchlist',
+    'Profile',
+  ];
   int _selectedIndex = 0;
   void _onItemTapped(int index) {
     setState(() {
@@ -32,60 +39,54 @@ class _RootScreenState extends State<RootScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AuthCubit, AuthState>(
-      listener: (context, state) {
-        if (state is AuthAuthenicated) {
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => LoginScreen()),
-          );
-        }
-      },
-      child: Scaffold(
-        backgroundColor: Colors.black,
-        body: SafeArea(child: _screens[_selectedIndex]),
-        bottomNavigationBar: _bottomNavigateBar(),
-      ),
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: _screens[_selectedIndex],
+      bottomNavigationBar: _bottomNavigateBar(),
     );
   }
 
   Widget _bottomNavigateBar() {
     return Container(
+      padding: const EdgeInsets.symmetric(vertical: 12),
       decoration: BoxDecoration(
-        color: Colors.grey[900],
+        color: const Color(0xFF0D0D0D),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(.3),
-            blurRadius: 10,
+            color: Colors.black.withOpacity(0.5),
+            blurRadius: 20,
             offset: const Offset(0, -5),
           ),
         ],
+        border: Border(
+          top: BorderSide(color: Colors.white.withOpacity(0.05), width: 0.5),
+        ),
       ),
       child: SafeArea(
+        top: false,
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
+            _buildNavItem(icon: Icons.home_rounded, label: 'Home', index: 0),
             _buildNavItem(
-              icon: Icons.home_outlined,
-              activeIcon: Icons.home,
-              label: 'Home',
-              index: 0,
-            ),
-            _buildNavItem(
-              icon: Icons.explore_outlined,
-              activeIcon: Icons.explore,
+              icon: Icons.explore_rounded,
               label: 'Browse',
               index: 1,
             ),
             _buildNavItem(
-              icon: Icons.bookmark_border,
-              activeIcon: Icons.bookmark,
-              label: 'Watchlist',
+              icon: Icons.confirmation_num_rounded,
+              label: 'Tickets',
               index: 2,
             ),
             _buildNavItem(
-              icon: Icons.person_outline,
-              activeIcon: Icons.person,
-              label: 'Profile',
+              icon: Icons.bookmark_rounded,
+              label: 'Watchlist',
               index: 3,
+            ),
+            _buildNavItem(
+              icon: Icons.person_rounded,
+              label: 'Profile',
+              index: 4,
             ),
           ],
         ),
@@ -95,36 +96,39 @@ class _RootScreenState extends State<RootScreen> {
 
   Widget _buildNavItem({
     required IconData icon,
-    required IconData activeIcon,
     required String label,
     required int index,
   }) {
     final isSelected = _selectedIndex == index;
+    final primaryColor = const Color(0xFFFF6B35);
+
     return GestureDetector(
       onTap: () => _onItemTapped(index),
+      behavior: HitTestBehavior.opaque,
       child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        padding: EdgeInsets.symmetric(
-          horizontal: isSelected ? 16 : 12,
-          vertical: 8,
-        ),
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         decoration: BoxDecoration(
-          color: isSelected ? Color(0xFFFF6b35) : Colors.grey[400],
-          borderRadius: BorderRadius.circular(12),
+          color: isSelected
+              ? primaryColor.withOpacity(0.15)
+              : Colors.transparent,
+          borderRadius: BorderRadius.circular(20),
         ),
         child: Row(
+          mainAxisSize: MainAxisSize.min,
           children: [
             Icon(
-              isSelected ? activeIcon : icon,
-              color: isSelected ? const Color(0xFFFF6B35) : Colors.grey[400],
+              icon,
+              color: isSelected ? primaryColor : Colors.grey[500],
               size: 26,
             ),
             if (isSelected) ...[
               const SizedBox(width: 8),
               Text(
                 label,
-                style: const TextStyle(
-                  color: Color(0xFFFF6B35),
+                style: TextStyle(
+                  color: primaryColor,
                   fontWeight: FontWeight.bold,
                   fontSize: 14,
                 ),

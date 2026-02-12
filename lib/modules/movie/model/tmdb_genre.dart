@@ -1,4 +1,19 @@
-class TmdbGenre {
+import 'package:equatable/equatable.dart';
+
+class TMDBGenre extends Equatable {
+  final int id;
+  final String name;
+
+  const TMDBGenre({required this.id, required this.name});
+
+  factory TMDBGenre.fromJson(Map<String, dynamic> json) {
+    return TMDBGenre(id: json['id'] ?? 0, name: json['name'] ?? '');
+  }
+
+  Map<String, dynamic> toJson() {
+    return {'id': id, 'name': name};
+  }
+
   static const Map<int, String> movieGenres = {
     28: 'Action',
     12: 'Adventure',
@@ -20,6 +35,7 @@ class TmdbGenre {
     10752: 'War',
     37: 'Western',
   };
+
   static const Map<int, String> tvGenres = {
     10759: 'Action & Adventure',
     16: 'Animation',
@@ -38,6 +54,7 @@ class TmdbGenre {
     10768: 'War & Politics',
     37: 'Western',
   };
+
   static String getGenreName(int id, {bool isTVShow = false}) {
     final genres = isTVShow ? tvGenres : movieGenres;
     return genres[id] ?? 'Unknown';
@@ -46,4 +63,7 @@ class TmdbGenre {
   static List<String> getGenreNames(List<int> ids, {bool isTVShow = false}) {
     return ids.map((id) => getGenreName(id, isTVShow: isTVShow)).toList();
   }
+
+  @override
+  List<Object?> get props => [id, name];
 }

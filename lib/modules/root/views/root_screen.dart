@@ -5,6 +5,7 @@ import 'package:movie_app/modules/home/views/home_screen.dart';
 import 'package:movie_app/modules/login/cubits/auth_cubit.dart';
 import 'package:movie_app/modules/login/cubits/auth_state.dart';
 import 'package:movie_app/modules/movie/views/my_watch_list_screen.dart';
+import 'package:movie_app/modules/booking/views/my_tickets_screen.dart';
 import 'package:movie_app/modules/profile/views/profile_screen.dart';
 
 class RootScreen extends StatefulWidget {
@@ -18,10 +19,17 @@ class _RootScreenState extends State<RootScreen> {
   final List<Widget> _screens = [
     const HomeTMDBScreen(),
     const BrowseScreen(),
+    const MyTicketsScreen(),
     const MyWatchlistScreen(),
     const ProfileScreen(),
   ];
-  final List<String> _titles = ['Home', 'Browse', 'Watchlist', 'Profile'];
+  final List<String> _titles = [
+    'Home',
+    'Browse',
+    'Tickets',
+    'Watchlist',
+    'Profile',
+  ];
   int _selectedIndex = 0;
   void _onItemTapped(int index) {
     setState(() {
@@ -66,14 +74,19 @@ class _RootScreenState extends State<RootScreen> {
               index: 1,
             ),
             _buildNavItem(
+              icon: Icons.confirmation_num_rounded,
+              label: 'Tickets',
+              index: 2,
+            ),
+            _buildNavItem(
               icon: Icons.bookmark_rounded,
               label: 'Watchlist',
-              index: 2,
+              index: 3,
             ),
             _buildNavItem(
               icon: Icons.person_rounded,
               label: 'Profile',
-              index: 3,
+              index: 4,
             ),
           ],
         ),

@@ -97,7 +97,8 @@ class _MyWatchlistScreenState extends State<MyWatchlistScreen> {
           ),
           const SizedBox(height: 32),
           ElevatedButton.icon(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () =>
+                Navigator.of(context).popUntil((route) => route.isFirst),
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFFFF6B35),
               padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),

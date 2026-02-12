@@ -404,6 +404,64 @@ class TMDBUserService {
     }
   }
 
+  /// Get total count of favorite movies and TV shows
+  Future<int> getFavoriteCount() async {
+    try {
+      final sessionId = await _getSessionId();
+      final accountId = await _getAccountId();
+
+      final movieResponse = await _client.get(
+        Uri.parse(EndpointTmdb.getFavoriteMovies(accountId, sessionId)),
+        headers: _headers,
+      );
+      final tvResponse = await _client.get(
+        Uri.parse(EndpointTmdb.getFavoriteTV(accountId, sessionId)),
+        headers: _headers,
+      );
+
+      int count = 0;
+      if (movieResponse.statusCode == 200) {
+        count += (json.decode(movieResponse.body)['total_results'] ?? 0) as int;
+      }
+      if (tvResponse.statusCode == 200) {
+        count += (json.decode(tvResponse.body)['total_results'] ?? 0) as int;
+      }
+      return count;
+    } catch (e) {
+      debugPrint('❌ Error getting favorite count: $e');
+      return 0;
+    }
+  }
+
+  /// Get total count of rated movies and TV shows
+  Future<int> getRatedCount() async {
+    try {
+      final sessionId = await _getSessionId();
+      final accountId = await _getAccountId();
+
+      final movieResponse = await _client.get(
+        Uri.parse(EndpointTmdb.getRatedMovies(accountId, sessionId)),
+        headers: _headers,
+      );
+      final tvResponse = await _client.get(
+        Uri.parse(EndpointTmdb.getRatedTV(accountId, sessionId)),
+        headers: _headers,
+      );
+
+      int count = 0;
+      if (movieResponse.statusCode == 200) {
+        count += (json.decode(movieResponse.body)['total_results'] ?? 0) as int;
+      }
+      if (tvResponse.statusCode == 200) {
+        count += (json.decode(tvResponse.body)['total_results'] ?? 0) as int;
+      }
+      return count;
+    } catch (e) {
+      debugPrint('❌ Error getting rated count: $e');
+      return 0;
+    }
+  }
+
   void dispose() {
     _client.close();
   }
